@@ -4,7 +4,7 @@
 #===================================================
 
 
-name: BUILD v8
+name: BUILD chromium
 
 on:
   push:
