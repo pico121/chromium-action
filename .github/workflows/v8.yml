@@ -29,6 +29,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
+      with:
+        # this might remove tools that are actually needed,
+        # when set to "true" but frees about 6 GB
+        tool-cache: true
       
     # init ubuntu1804 environment
     - name: init env
