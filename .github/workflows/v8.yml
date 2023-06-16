@@ -13,9 +13,9 @@ on:
     types: started
 
 env:
-  PATCH_FLAG: true
+  PATCH_FLAG: false
   COMMIT: e0a58f83255d1dae907e2ba4564ad8928a7dedf4	
-  DEPOT_UPLOAD: true
+  DEPOT_UPLOAD: false
   SRC_UPLOAD: true
   BINARY_UPLOAD: false
 
@@ -43,11 +43,11 @@ jobs:
         echo export PATH=\"\$PATH:`pwd`/depot_tools/\" >> ~/.bash_profile
     
     # fetch v8 source code
-    - name: fetch v8
+    - name: fetch chromium
       run: |
+        mkdir chromium && cd chromium
         source ~/.bash_profile
-        fetch v8
-        cd v8
+        fetch chromium
     
     # patch source code
     - name: patch v8
@@ -57,8 +57,9 @@ jobs:
         git reset --hard $COMMIT
         cd ..
         
-    - name: build v8
+    - name: build chromium
       run: |
+        cd chromium
         source ~/.bash_profile
         gclient sync -f
     
@@ -69,10 +70,10 @@ jobs:
         zip -q -r depot_tools.zip depot_tools
         
     # 7zip v8 src
-    - name: 7zip v8_src
+    - name: 7zip chromium_src
       run: |
-        zip -q -r v8.zip v8
-        7z a v8.7z ./v8.zip -v2048m
+        zip -q -r chromium.zip chromium
+        7z a chromium.7z ./chromium.zip -v2048m
     
     # upload depot_tools.zip to cowtransfer
     - name: upload depot_tools
@@ -82,10 +83,18 @@ jobs:
         ./transfer wss --block 2621440 -s -p 64 --no-progress depot_tools.zip 2>&1
    
     # upload v8.zip to cowtransfer
-    - name: upload v8_src
+    - name: upload chromium_src
       if: env.SRC_UPLOAD == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
         ./transfer wss --block 2621440 -s -p 64 --no-progress v8.7z.001 2>&1
         ./transfer wss --block 2621440 -s -p 64 --no-progress v8.7z.002 2>&1
+        ./transfer wss --block 2621440 -s -p 64 --no-progress v8.7z.003 2>&1
+        ./transfer wss --block 2621440 -s -p 64 --no-progress v8.7z.004 2>&1
+        ./transfer wss --block 2621440 -s -p 64 --no-progress v8.7z.005 2>&1
+        ./transfer wss --block 2621440 -s -p 64 --no-progress v8.7z.006 2>&1
+        ./transfer wss --block 2621440 -s -p 64 --no-progress v8.7z.007 2>&1
+        ./transfer wss --block 2621440 -s -p 64 --no-progress v8.7z.008 2>&1
+        ./transfer wss --block 2621440 -s -p 64 --no-progress v8.7z.009 2>&1
+        ./transfer wss --block 2621440 -s -p 64 --no-progress v8.7z.010 2>&1
 
