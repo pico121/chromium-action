@@ -8,7 +8,7 @@ name: BUILD chromium
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   watch:
     types: started
 
